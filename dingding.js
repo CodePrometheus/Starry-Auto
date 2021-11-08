@@ -1,13 +1,13 @@
 doDingDing()
 
-function doDingDing () {
+function doDingDing() {
   brightScreen();
   unlockScreen();
   doing();
   lockScreen();
 }
 
-function doing () {
+function doing() {
   // 检查无障碍权限
   auto.waitFor("normal");
   launchApp("钉钉");
@@ -19,7 +19,7 @@ function doing () {
 
   // 智能填表
   let smartFill = className("android.view.View").text("智能填表")
-    .findOne(8000).parent();
+    .findOne(5000).parent();
   if (smartFill) {
     toast("找到智能填表");
     smartFill.click();
@@ -69,8 +69,9 @@ function doing () {
   }
 
   // 如果有修改，重新提交
+  sleep(2000)
   let resubmit = className("android.view.View").text("修改")
-    .findOne(2000);
+    .findOne(3000);
   if (resubmit) {
     toast("找到修改");
     resubmit.click();
@@ -96,21 +97,21 @@ function doing () {
   let commit = text("提交").findOne(2000);
   if (commit) {
     toast("找到提交");
-    sleep(1000);
     commit.click();
+    sleep(2000);
   } else {
     toast("未找到提交");
   }
 }
 
 
-function brightScreen () {
+function brightScreen() {
   home();
   swipe(device.width / 2, 1300, device.width / 2, 300, 1000);
   device.setBrightnessMode(0) // 手动亮度模式
   device.setBrightness(20)
   device.wakeUpIfNeeded() // 唤醒设备
-  device.keepScreenOn()   // 保持亮屏
+  device.keepScreenOn() // 保持亮屏
   sleep(1000) // 等待屏幕亮起
 
   let cnt = 0;
@@ -128,9 +129,8 @@ function brightScreen () {
   sleep(1000)
 }
 
-function unlockScreen () {
+function unlockScreen() {
   if (isDeviceLocked()) {
-    // 数字锁屏
     desc().findOne().click()
     desc().findOne().click()
     desc().findOne().click()
@@ -138,16 +138,14 @@ function unlockScreen () {
     desc().findOne().click()
     desc().findOne().click()
 
-    sleep(1000) // 等待解锁动画完成
-    home()
-    sleep(1000) // 等待返回动画完成
+    sleep(2000) // 等待解锁动画完成
   } else {
     return
   }
 }
 
 
-function lockScreen () {
+function lockScreen() {
   home();
   toast("锁屏");
   sleep(3000);
@@ -155,7 +153,7 @@ function lockScreen () {
 }
 
 // 屏幕是否为锁定状态
-function isDeviceLocked () {
+function isDeviceLocked() {
   importClass(android.app.KeyguardManager)
   importClass(android.content.Context)
   let km = context.getSystemService(Context.KEYGUARD_SERVICE)
